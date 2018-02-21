@@ -2,10 +2,7 @@ package com.qa.cinema.models;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 //@Table(name = "screen")
@@ -13,7 +10,10 @@ public class Screen {
 	
 	@Id
 	private Integer id;
+
+	@Enumerated(EnumType.STRING)
 	private ScreenType type;
+
 	private Integer numberOfSeats;
 	private Boolean accessiblity;
 	

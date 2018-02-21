@@ -18,7 +18,7 @@
 				value="cinemaDrop.ddl" />
 
 			<property name="javax.persistence.sql-load-script-source"
-				value="import.sql " />
+				value="import.sql" />
 		</properties>
 	</persistence-unit>
 </persistence>
