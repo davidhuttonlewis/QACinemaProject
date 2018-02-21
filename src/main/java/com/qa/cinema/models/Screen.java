@@ -2,27 +2,30 @@ package com.qa.cinema.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "screen")
 public class Screen {
 	
 	@Id
 	private Integer id;
-	private String type;
+	private ScreenType type;
 	private Integer numberOfSeats;
 	private Boolean accessiblity;
 	
-	@OneToMany(mappedBy = "screen")
-	private List<Screening> screening;
+
+	private List<Showing> showings;
 	
 	public Screen() {
 		
 	}
 
-	public Screen(Integer id, String type, Integer numberOfSeats, Boolean accessiblity) {
+	public Screen(Integer id, ScreenType type, Integer numberOfSeats, Boolean accessiblity) {
 		super();
 		this.id = id;
 		this.type = type;
@@ -30,12 +33,13 @@ public class Screen {
 		this.accessiblity = accessiblity;
 	}
 
-	public List<Screening> getScreening() {
-		return screening;
+	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL)
+	public List<Showing> getShowings() {
+		return showings;
 	}
 
-	public void setScreens(List<Screening> screening) {
-		this.screening = screening;
+	public void setScreens(List<Showing> showings) {
+		this.showings = showings;
 	}
 
 	public Integer getId() {
@@ -46,11 +50,11 @@ public class Screen {
 		this.id = id;
 	}
 
-	public String getType() {
+	public ScreenType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(ScreenType type) {
 		this.type = type;
 	}
 

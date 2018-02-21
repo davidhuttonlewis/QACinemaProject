@@ -1,5 +1,7 @@
 package com.qa.cinema.repositories;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,8 +16,12 @@ public class ScreenRepository {
 		return em.find(Screen.class, id);
 	}
 	
-	public Screen create(Screen screen) {
-		em.persist(screen);
-		return screen;
+	public List<Screen>findAll(){
+		return em.createQuery("SELECT screen FROM Screen screen ORDER BY screen.id", Screen.class).getResultList();
 	}
+	
+//	public Screen create(Screen screen) {
+//		em.persist(screen);
+//		return screen;
+//	}
 }

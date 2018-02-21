@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1"
-	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence 
-     http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
-	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<!-- <persistence version="2.1" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence 
+	http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> -->
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+                      http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
 
 	<persistence-unit transaction-type="JTA" name="cinemaPU">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>com.qa.cinema.models.Screen</class>
-		<class>com.qa.cinema.models.Screening</class>
+		<class>com.qa.cinema.models.Showing</class>
 		<properties>
 			<property name="javax.persistence.schema-generation.database.action"
 				value="drop-and-create" />
@@ -16,6 +21,9 @@
 				value="cinemaCreate.ddl" />
 			<property name="javax.persistence.schema-generation.scripts.drop-target"
 				value="cinemaDrop.ddl" />
+
+			<property name="javax.persistence.sql-load-script-source"
+				value="import.sql " />
 		</properties>
 	</persistence-unit>
 </persistence>
