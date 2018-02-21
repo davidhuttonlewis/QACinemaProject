@@ -15,12 +15,16 @@ import javax.ws.rs.core.Response;
 
 import com.qa.cinema.models.Screen;
 import com.qa.cinema.repositories.ScreenRepository;
+import com.qa.cinema.util.JSONCreator;
 
 @Path("/screen")
 public class ScreenEndPoint {
 
     @Inject
     private ScreenRepository screenRepository;
+    
+    @Inject
+    private JSONCreator json;
 
     @GET
     @Path("/{id : \\d+}")
@@ -29,7 +33,7 @@ public class ScreenEndPoint {
         Screen screen = screenRepository.find(id);
         if (screen == null)
             return Response.status(NOT_FOUND).build();
-        return Response.ok(screen).build();
+        return Response.ok(json.toJSON(screen)).build();
     }
     
     @GET
@@ -39,7 +43,7 @@ public class ScreenEndPoint {
 	    	List<Screen> screen = screenRepository.findAll();
 	        if (screen.isEmpty())
 	            return Response.status(NOT_FOUND).build();
-	        return Response.ok(screen).build();
+	        return Response.ok(json.toJSON(screen)).build();
     	}
     	return Response.ok("Fucked up").build();
     }
