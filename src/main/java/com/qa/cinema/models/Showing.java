@@ -18,6 +18,8 @@ public class Showing {
 	private Date time;
 	private String film;
 	
+	@ManyToOne
+	@JoinColumn(name = "screening_id")
 	private Screen screen;
 	
 	public Showing() {}
@@ -30,8 +32,6 @@ public class Showing {
 		this.screen = screen;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name = "screening_id")
 	public Screen getScreen() {
 		return screen;
 	}

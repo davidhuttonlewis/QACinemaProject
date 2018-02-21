@@ -6,10 +6,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "screen")
+//@Table(name = "screen")
 public class Screen {
 	
 	@Id
@@ -19,6 +18,7 @@ public class Screen {
 	private Boolean accessiblity;
 	
 
+	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL)
 	private List<Showing> showings;
 	
 	public Screen() {
@@ -33,7 +33,6 @@ public class Screen {
 		this.accessiblity = accessiblity;
 	}
 
-	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL)
 	public List<Showing> getShowings() {
 		return showings;
 	}
