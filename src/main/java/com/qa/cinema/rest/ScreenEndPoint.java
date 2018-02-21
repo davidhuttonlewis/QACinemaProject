@@ -1,7 +1,9 @@
 package com.qa.cinema.rest;
 
-import com.qa.cinema.models.Screen;
-import com.qa.cinema.repositories.ScreenRepository;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.validation.constraints.Min;
@@ -9,12 +11,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.awt.*;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import com.qa.cinema.models.Screen;
+import com.qa.cinema.repositories.ScreenRepository;
 
 @Path("/screen")
 public class ScreenEndPoint {
@@ -31,5 +31,16 @@ public class ScreenEndPoint {
             return Response.status(NOT_FOUND).build();
         return Response.ok(screen).build();
     }
-
+    
+    @GET
+    @Produces(APPLICATION_JSON)
+    public Response getScreens() {
+    	if (screenRepository != null) {
+	    	List<Screen> screen = screenRepository.findAll();
+	        if (screen.isEmpty())
+	            return Response.status(NOT_FOUND).build();
+	        return Response.ok(screen).build();
+    	}
+    	return Response.ok("Fucked up").build();
+    }
 }

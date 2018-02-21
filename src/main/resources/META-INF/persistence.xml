@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xmlns="http://xmlns.jcp.org/xml/ns/persistence"
-             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
-             version="2.1">
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+	version="2.1">
 
-	<persistence-unit transaction-type="JTA" name="cinemaPU">
+	<persistence-unit name="cinemaPU">
+		<jta-data-source>java:jboss/datasources/ApplicationDS</jta-data-source>
+
 		<class>com.qa.cinema.models.Screen</class>
 		<class>com.qa.cinema.models.Showing</class>
 		<properties>
-			<property name="javax.persistence.schema-generation.database.action"
+<!-- 			<property name="javax.persistence.schema-generation.database.action"
 				value="drop-and-create" />
 			<property name="javax.persistence.schema-generation.scripts.action"
 				value="drop-and-create" />
@@ -16,7 +18,9 @@
 				value="cinemaCreate.ddl" />
 			<property name="javax.persistence.schema-generation.scripts.drop-target"
 				value="cinemaDrop.ddl" />
-
+ -->
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.show_sql" value="false" />
 			<property name="javax.persistence.sql-load-script-source"
 				value="import.sql" />
 		</properties>

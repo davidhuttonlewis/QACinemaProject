@@ -15,7 +15,7 @@ public class Screen {
 	private ScreenType type;
 
 	private Integer numberOfSeats;
-	private Boolean accessiblity;
+	private Boolean accessibility;
 	
 
 	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL)
@@ -30,7 +30,7 @@ public class Screen {
 		this.id = id;
 		this.type = type;
 		this.numberOfSeats = numberOfSeats;
-		this.accessiblity = accessiblity;
+		this.accessibility = accessiblity;
 	}
 
 	public List<Showing> getShowings() {
@@ -66,17 +66,17 @@ public class Screen {
 	}
 
 	public Boolean getAccessiblity() {
-		return accessiblity;
+		return accessibility;
 	}
 
 	public void setAccessiblity(Boolean accessiblity) {
-		this.accessiblity = accessiblity;
+		this.accessibility = accessiblity;
 	}
 
 	@Override
 	public String toString() {
 		return "Screen [id=" + id + ", type=" + type + ", numberOfSeats=" + numberOfSeats + ", accessiblity="
-				+ accessiblity + "]";
+				+ accessibility + "]";
 	}
 	
 }

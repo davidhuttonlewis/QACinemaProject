@@ -16,7 +16,7 @@ public class ScreenRepository {
 		return em.find(Screen.class, id);
 	}
 	
-	public List<Screen>findAll(){
+	public List<Screen> findAll(){
 		return em.createQuery("SELECT screen FROM Screen screen ORDER BY screen.id", Screen.class).getResultList();
 	}
 	
