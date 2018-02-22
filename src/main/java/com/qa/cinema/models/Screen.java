@@ -36,9 +36,8 @@ public class Screen {
 		
 	}
 
-	public Screen(Integer id, ScreenType type, Integer numberOfSeats, Boolean accessiblity) {
+	public Screen(ScreenType type, Integer numberOfSeats, Boolean accessiblity) {
 		super();
-		this.id = id;
 		this.type = type;
 		this.numberOfSeats = numberOfSeats;
 		this.accessibility = accessiblity;

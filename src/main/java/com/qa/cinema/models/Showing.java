@@ -41,9 +41,8 @@ public class Showing {
 	
 	public Showing() {}
 	
-	public Showing(Integer id, Date time, String film, Screen screen) {
+	public Showing(Date time, String film, Screen screen) {
 		super();
-		this.id = id;
 		this.time = time;
 		this.film = film;
 		this.screen = screen;

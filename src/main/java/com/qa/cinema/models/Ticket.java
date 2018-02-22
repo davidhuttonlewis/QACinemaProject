@@ -42,9 +42,8 @@ public class Ticket {
 
 	public Ticket() {}
 
-	public Ticket(Integer id, TicketType type, Double price, Showing showing, Booking booking) {
+	public Ticket(TicketType type, Double price, Showing showing, Booking booking) {
 		super();
-		this.id = id;
 		this.type = type;
 		this.price = price;
 		this.showing = showing;

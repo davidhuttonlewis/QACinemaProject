@@ -4,10 +4,15 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+import javax.validation.constraints.NotNull;
 
 import com.qa.cinema.models.Showing;
 
+import static javax.transaction.Transactional.TxType.SUPPORTS;
+import static javax.transaction.Transactional.TxType.REQUIRED;
 
+@Transactional(SUPPORTS)
 public class ShowingRepository {
 
 		@PersistenceContext(unitName = "cinemaPU")
@@ -21,4 +26,18 @@ public class ShowingRepository {
 			return em.createQuery("SELECT showings FROM Showing showings ORDER BY showings.id", Showing.class).getResultList();
 		}
 		
+		 @Transactional(REQUIRED)
+		    public Showing create(@NotNull Showing showing) {
+			// showing.setId(99);
+			// showing.setFilm("");
+			// showing.setTime(null);
+			// showing.setScreen(null);
+		        em.persist(showing);
+		        return showing;
+		}
+		
+		 @Transactional(REQUIRED)
+		    public void delete(@NotNull Integer id) {
+		        em.remove(em.getReference(Showing.class, id));
+		    }
 }

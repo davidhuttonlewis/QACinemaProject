@@ -26,12 +26,6 @@ public class Booking {
 
 	public Booking() {}
 
-	public Booking(Integer id, String bookingref) {
-		super();
-		this.id = id;
-		this.bookingRef = bookingref;
-	}
-
 	public Integer getId() {
 		return id;
 	}
