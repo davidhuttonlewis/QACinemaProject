@@ -1,18 +1,54 @@
 package com.qa.cinema.models;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Ticket {
 	
+	@Id
+	@GeneratedValue
 	private Integer id;
-	private String type;
+	
+	@Enumerated(EnumType.STRING)
+	@NotNull
+	private TicketType type;
+	
+	@NotNull
+	@Min(4)
 	private Double price;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "showing_id")
+	@NotNull
+	private Showing showing;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "booking_id")
+	@NotNull
+	private Booking booking;
+
 	public Ticket() {}
 
-	public Ticket(Integer id, String type, Double price) {
+	public Ticket(Integer id, TicketType type, Double price, Showing showing, Booking booking) {
 		super();
 		this.id = id;
 		this.type = type;
 		this.price = price;
+		this.showing = showing;
+		this.booking = booking;
 	}
 
 	public Integer getId() {
@@ -23,11 +59,11 @@ public class Ticket {
 		this.id = id;
 	}
 
-	public String getType() {
+	public TicketType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(TicketType type) {
 		this.type = type;
 	}
 
@@ -42,6 +78,22 @@ public class Ticket {
 	@Override
 	public String toString() {
 		return "Ticket [id=" + id + ", type=" + type + ", price=" + price + "]";
+	}
+
+	public Showing getShowing() {
+		return showing;
+	}
+
+	public void setShowing(Showing showing) {
+		this.showing = showing;
+	}
+
+	public Booking getBooking() {
+		return booking;
+	}
+
+	public void setBooking(Booking booking) {
+		this.booking = booking;
 	}
 	
 }

@@ -1,14 +1,18 @@
 package com.qa.cinema.models;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -18,15 +22,22 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 public class Showing {
 	
 	@Id
-	@GeneratedValue()
+	@GeneratedValue
 	private Integer id;
 	
+	@NotNull
 	private Date time;
+	@NotNull
+	@Size(min = 2, max = 50)
 	private String film;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "screening_id")
+	@NotNull
 	private Screen screen;
+	
+	@OneToMany(mappedBy = "showing", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	private List<Ticket> ticket;
 	
 	public Showing() {}
 	
