@@ -3,6 +3,7 @@ package com.qa.cinema.models;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -23,7 +24,7 @@ public class Showing {
 	private Date time;
 	private String film;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "screening_id")
 	private Screen screen;
 	

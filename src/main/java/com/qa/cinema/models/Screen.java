@@ -21,8 +21,7 @@ public class Screen {
 	private Integer numberOfSeats;
 	private Boolean accessibility;
 	
-
-	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<Showing> showings;
 	
 	public Screen() {

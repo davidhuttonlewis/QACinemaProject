@@ -11,6 +11,7 @@ public class JSONCreator {
 		try {
 			return mapper.writeValueAsString(obj);
 		} catch (JsonProcessingException e) {
+			e.printStackTrace();
 			return "null";
 		}
 	}
