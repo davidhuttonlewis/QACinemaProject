@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 
 import com.qa.cinema.models.Screen;
-import com.qa.cinema.models.Showing;
 
 public class ScreenRepository {
 	// find, create, delete, all

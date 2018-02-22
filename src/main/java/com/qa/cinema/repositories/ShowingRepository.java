@@ -12,7 +12,7 @@ import com.qa.cinema.models.Showing;
 import static javax.transaction.Transactional.TxType.SUPPORTS;
 import static javax.transaction.Transactional.TxType.REQUIRED;
 
-@Transactional(SUPPORTS)
+
 public class ShowingRepository {
 
 		@PersistenceContext(unitName = "cinemaPU")
@@ -28,10 +28,6 @@ public class ShowingRepository {
 		
 		 @Transactional(REQUIRED)
 		    public Showing create(@NotNull Showing showing) {
-			// showing.setId(99);
-			// showing.setFilm("");
-			// showing.setTime(null);
-			// showing.setScreen(null);
 		        em.persist(showing);
 		        return showing;
 		}

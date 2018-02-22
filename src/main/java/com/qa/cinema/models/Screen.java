@@ -29,7 +29,7 @@ public class Screen {
 	@NotNull
 	private Boolean accessibility;
 	
-	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "screen", orphanRemoval = true, cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
 	private List<Showing> showings;
 	
 	public Screen() {

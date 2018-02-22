@@ -1,5 +1,6 @@
 package com.qa.cinema.rest;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 import java.net.URI;
@@ -19,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.qa.cinema.models.Screen;
 import com.qa.cinema.models.Showing;
 import com.qa.cinema.repositories.ShowingRepository;
 import com.qa.cinema.util.JSONCreator;
@@ -31,6 +33,17 @@ public class ShowingEndpoint {
 	
 	@Inject
 	private JSONCreator json;
+	
+	
+	 @GET
+	    @Path("/{id : \\d+}")
+	    @Produces(APPLICATION_JSON)
+	    public Response getShowing(@PathParam("id") @Min(1) Integer id) {
+	        Showing showing = showingRepository.find(id);
+	        if (showing == null)
+	            return Response.status(NOT_FOUND).build();
+	        return Response.ok(json.toJSON(showing)).build();
+	    }
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
