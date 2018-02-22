@@ -10,7 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Booking {
 
 	@Id
@@ -20,7 +24,7 @@ public class Booking {
 	@Size(min = 6, max = 6)
 	private String bookingRef;
 	
-	@OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "booking", orphanRemoval = true, cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
 	private List<Ticket> ticket;
 	
 

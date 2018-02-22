@@ -36,7 +36,7 @@ public class Showing {
 	@NotNull
 	private Screen screen;
 	
-	@OneToMany(mappedBy = "showing", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "showing", orphanRemoval = true, cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
 	private List<Ticket> ticket;
 	
 	public Showing() {}
