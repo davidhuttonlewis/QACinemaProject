@@ -1,6 +1,7 @@
 package com.qa.cinema.repositories;
 
 import static javax.transaction.Transactional.TxType.REQUIRED;
+import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 import com.qa.cinema.models.Screen;
 
+@Transactional(SUPPORTS)
 public class ScreenRepository {
 	// find, create, delete, all
 	@PersistenceContext(unitName = "cinemaPU")
