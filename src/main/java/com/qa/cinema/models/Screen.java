@@ -3,22 +3,30 @@ package com.qa.cinema.models;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-//@Table(name = "screen")
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Screen {
 	
 	@Id
+	@GeneratedValue
 	private Integer id;
 
 	@Enumerated(EnumType.STRING)
+	@NotNull
 	private ScreenType type;
 
+	@Min(10)
+	@Max(100)
+	@NotNull
 	private Integer numberOfSeats;
+	@NotNull
 	private Boolean accessibility;
 	
 	@OneToMany(mappedBy = "screen", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
