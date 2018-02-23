@@ -17,7 +17,7 @@ public class JSONCreatorTest {
 	@Test
 	public void testJSON() {
 		JSONCreator creator = new JSONCreator();
-		final String JSON_EXPECTED = "{\"id\":1,\"type\":\"STANDARD\",\"price\":7.0,\"showing\":{\"id\":1,\"time\":null,\"film\":\"Film\",\"screen\":{\"id\":1,\"type\":\"TWO_D\",\"numberOfSeats\":12,\"showings\":[1],\"accessiblity\":true}},\"booking\":{\"id\":1,\"bookingRef\":\"000000\",\"ticket\":[1]}}";
+		final String JSON_EXPECTED = "{\"id\":1,\"type\":\"STANDARD\",\"price\":7.0,\"showing\":{\"id\":1,\"time\":null,\"film\":\"Film\",\"screen\":{\"id\":1,\"type\":\"TWO_D\",\"numberOfSeats\":12,\"accessibility\":true,\"showings\":[1]}},\"booking\":{\"id\":1,\"bookingRef\":\"000000\",\"ticket\":[1]}}";
 
 		
 		Screen scr = new Screen(ScreenType.TWO_D, 12, true);
