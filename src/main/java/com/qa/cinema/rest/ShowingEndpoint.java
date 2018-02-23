@@ -30,53 +30,40 @@ import com.qa.cinema.models.ScreenType;
 import com.qa.cinema.models.Showing;
 import com.qa.cinema.repositories.ScreenRepository;
 import com.qa.cinema.repositories.ShowingRepository;
+import com.qa.cinema.services.ShowingService;
 import com.qa.cinema.util.JSONCreator;
 
 @Path("/showing")
 public class ShowingEndpoint {
 
 	@Inject
-	private ShowingRepository showingRepository;
+	private ShowingService showingService;
 	
-	@Inject
-	private ScreenRepository screenRepository;
-
-	@Inject
-	private JSONCreator json;
-
 	@GET
 	@Path("/{id : \\d+}")
 	@Produces(APPLICATION_JSON)
 	public Response getShowing(@PathParam("id") @Min(1) Integer id) {
-		Showing showing = showingRepository.find(id);
-		if (showing == null)
-			return Response.status(NOT_FOUND).build();
-		return Response.ok(json.toJSON(showing)).build();
+		return showingService.getShowing(id);		
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllShowings() {
-
-		List<Showing> showings = showingRepository.findAll();
-		if (showings.isEmpty())
-			return Response.status(NOT_FOUND).build();
-		return Response.ok(json.toJSON(showings)).build();
+		return showingService.getAllShowings();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createBook(Showing showing, @Context UriInfo uriInfo) {
-		showing = showingRepository.create(showing);
-		URI createdURI = uriInfo.getBaseUriBuilder().path(showing.getId().toString()).build();
-		return Response.created(createdURI).build();
+
+		return showingService.createShowing(showing, uriInfo);
 	}
 
 	@DELETE
 	@Path("/{id : \\d+}")
 	public Response deleteBook(@PathParam("id") @Min(1) Integer id) {
-		showingRepository.delete(id);
-		return Response.noContent().build();
+
+		return showingService.deleteShowing(id);
 	}
 	
 	@PUT
@@ -85,28 +72,8 @@ public class ShowingEndpoint {
                                  @FormParam("screen") Integer screenId,
                                  @FormParam("time") String time) {
 
-        Showing showing = showingRepository.find(id);
-        Screen screen = screenRepository.find(screenId);
-        
-        if (showing == null) {
-            Response.status(NOT_FOUND).build();
-        }
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Date date = null;
-		try {
-			date = sdf.parse(time);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-        
-        showing.setFilm(film);
-        showing.setScreen(screen);
-        showing.setTime(date);
-        
-        showingRepository.update(showing);
-    
-        return Response.noContent().build();
+		
+		return showingService.updateShowing(id, screenId, time, film);
     }
 
 }
