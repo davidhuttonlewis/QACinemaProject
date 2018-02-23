@@ -1,37 +1,33 @@
 package com.qa.cinema.rest;
 
-import com.qa.cinema.models.Screen;
-import com.qa.cinema.models.ScreenType;
-import com.qa.cinema.models.Showing;
-import com.qa.cinema.models.Ticket;
-import com.qa.cinema.models.TicketType;
-import com.qa.cinema.repositories.ShowingRepository;
-import com.qa.cinema.repositories.TicketRepository;
-import com.qa.cinema.services.TicketService;
-import com.qa.cinema.util.JSONCreator;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.NO_CONTENT;
+
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.validation.constraints.Min;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.awt.*;
-import java.net.URI;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.logging.Logger;
-import java.util.Date;
-import java.util.List;
+
+import com.qa.cinema.models.Ticket;
+import com.qa.cinema.models.TicketType;
+import com.qa.cinema.services.TicketService;
 
 @Path("/ticket")
-public class TicketEndPoint {
+public class TicketEndpoint {
 
-    private static final Logger LOGGER = Logger.getLogger(TicketEndPoint.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TicketEndpoint.class.getName());
 
     @Inject
     private TicketService ticketService;

@@ -5,7 +5,7 @@ import com.qa.cinema.models.Ticket;
 import com.qa.cinema.models.TicketType;
 import com.qa.cinema.repositories.ShowingRepository;
 import com.qa.cinema.repositories.TicketRepository;
-import com.qa.cinema.rest.TicketEndPoint;
+import com.qa.cinema.rest.TicketEndpoint;
 import com.qa.cinema.util.JSONCreator;
 
 import javax.ejb.Stateless;
@@ -29,7 +29,7 @@ import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 @Default
 public class TicketService {
 
-    private static final Logger LOGGER = Logger.getLogger(TicketEndPoint.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TicketEndpoint.class.getName());
 
     @Inject
     private TicketRepository ticketRepository;
