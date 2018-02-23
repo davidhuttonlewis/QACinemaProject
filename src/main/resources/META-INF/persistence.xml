@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+	version="2.1">
+
+	<persistence-unit name="cinemaPU">
+		<jta-data-source>java:jboss/datasources/ApplicationDS</jta-data-source>
+
+		<class>com.qa.cinema.models.Screen</class>
+		<class>com.qa.cinema.models.Showing</class>
+		<class>com.qa.cinema.models.Ticket</class>
+		<class>com.qa.cinema.models.Booking</class>
+		<properties>
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="javax.persistence.sql-load-script-source"
+				value="import.sql" />
+		</properties>
+	</persistence-unit>
+</persistence>
