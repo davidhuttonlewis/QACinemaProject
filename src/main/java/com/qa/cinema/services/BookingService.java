@@ -37,7 +37,7 @@ public class BookingService {
 
 	private static final Logger LOGGER = Logger.getLogger(BookingEndpoint.class.getName()); 
 	
-	@PersistenceContext(unitName = "primary")
+	@PersistenceContext(unitName = "cinemaPU")
 	private EntityManager em;
 	
 	@Inject
@@ -46,10 +46,7 @@ public class BookingService {
 	@Inject
 	private JSONCreator json;
 	
-	@GET
-	@Path("/{id : \\d+}")
-	@Produces(APPLICATION_JSON)
-	public Response getBooking(@PathParam("id") @Min(1) Integer id) {
+	public Response getBooking(Integer id) {
 		LOGGER.info("in get book");
 		Booking booking = bookingRepository.find(id);
 		LOGGER.info("got book");
@@ -61,8 +58,6 @@ public class BookingService {
 		return Response.ok(json.toJSON(booking)).build();
 	}
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBookings() {
 
 		LOGGER.info("in get books");
@@ -76,9 +71,7 @@ public class BookingService {
 		return Response.ok(json.toJSON(bookings)).build();
 	}
 
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createBooking(Booking booking, @Context UriInfo uriInfo) {
+	public Response createBooking(Booking booking,  UriInfo uriInfo) {
 		LOGGER.info("in make book");
 		booking = bookingRepository.create(booking);
 		LOGGER.info("book in table");
@@ -87,9 +80,7 @@ public class BookingService {
 		return Response.created(createdURI).build();
 	}
 
-	@DELETE
-	@Path("/{id : \\d+}")
-	public Response deleteBooking(@PathParam("id") @Min(1) Integer id) {
+	public Response deleteBooking(Integer id) {
 		bookingRepository.destroy(id);
 		return Response.noContent().build();
 	}

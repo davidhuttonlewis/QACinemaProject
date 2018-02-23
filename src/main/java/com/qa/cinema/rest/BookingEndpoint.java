@@ -2,6 +2,8 @@ package com.qa.cinema.rest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import javax.ejb.Stateless;
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.validation.constraints.Min;
 import javax.ws.rs.Consumes;
@@ -29,6 +31,7 @@ public class BookingEndpoint {
 	@Path("/{id : \\d+}")
 	@Produces(APPLICATION_JSON)
 	public Response getBooking(@PathParam("id") @Min(1) Integer id) {
+		System.out.println("hjdsbfjhdsbfhjdsbjdsbfhjdsfbjshdfkb");
 		return bookingService.getBooking(id);
 	}
 
