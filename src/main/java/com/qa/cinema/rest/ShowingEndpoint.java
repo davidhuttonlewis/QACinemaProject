@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.validation.constraints.Min;
@@ -34,6 +35,9 @@ import com.qa.cinema.util.JSONCreator;
 
 @Path("/showing")
 public class ShowingEndpoint {
+
+	private static final Logger LOGGER = Logger.getLogger(ShowingEndpoint.class.getName());
+
 
 	@Inject
 	private ShowingRepository showingRepository;
@@ -85,21 +89,35 @@ public class ShowingEndpoint {
                                  @FormParam("screen") Integer screenId,
                                  @FormParam("time") String time) {
 
+		LOGGER.info("ID is " + id);
+		LOGGER.info("Film is " + film);
+		LOGGER.info("ScreenID is " + screenId);
+		LOGGER.info("Time is " + time);
+
         Showing showing = showingRepository.find(id);
+		LOGGER.info("Showing is " + showing);
         Screen screen = screenRepository.find(screenId);
-        
+		LOGGER.info("Screen is " + screen);
+
+
+
         if (showing == null) {
             Response.status(NOT_FOUND).build();
         }
         
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date date = null;
+
+        LOGGER.info("SDF is " + sdf);
+
 		try {
 			date = sdf.parse(time);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-        
+
+		LOGGER.info("Date is " + date);
+
         showing.setFilm(film);
         showing.setScreen(screen);
         showing.setTime(date);
