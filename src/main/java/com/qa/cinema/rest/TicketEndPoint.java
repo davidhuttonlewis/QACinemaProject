@@ -7,6 +7,7 @@ import com.qa.cinema.models.Ticket;
 import com.qa.cinema.models.TicketType;
 import com.qa.cinema.repositories.ShowingRepository;
 import com.qa.cinema.repositories.TicketRepository;
+import com.qa.cinema.services.TicketService;
 import com.qa.cinema.util.JSONCreator;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
@@ -33,80 +34,54 @@ public class TicketEndPoint {
     private static final Logger LOGGER = Logger.getLogger(TicketEndPoint.class.getName());
 
     @Inject
-    private TicketRepository ticketRepository;
-    
-    @Inject
-    private ShowingRepository showingRepository;
-
-    @Inject
-    private JSONCreator json;
+    private TicketService ticketService;
 
     @GET
     @Path("/{id : \\d+}")
     @Produces(APPLICATION_JSON)
     public Response getTicket(@PathParam("id") @Min(1) Integer id) {
         LOGGER.info("are you here");
-        Ticket ticket = ticketRepository.find(id);
+
         LOGGER.info("in get single ticket");
-        if (ticket == null) {
-            LOGGER.info("no this ticket");
-            return Response.status(NOT_FOUND).build();
-        }
+
         LOGGER.info("ticket");
-        return Response.ok(json.toJSON(ticket)).build();
+        return ticketService.getTicket(id);
     }
 
     @GET
     @Produces(APPLICATION_JSON)
     public Response getAllTickets() {
         LOGGER.info("in getting all tickets");
-        List<Ticket> tickets = ticketRepository.findAll();
+
         LOGGER.info("got tickets");
-        if (tickets.isEmpty()) {
-            LOGGER.info("nothing in here");
-            return Response.status(NO_CONTENT).build();
-        }
+
         LOGGER.info("got some tickets");
-        return Response.ok(json.toJSON(tickets)).build();
+        return ticketService.getAllTickets();
     }
 
     @POST
     @Consumes(APPLICATION_JSON)
     public Response createTicket(Ticket ticket, @Context UriInfo uriInfo) {
         LOGGER.info("in create method");
-        ticket = ticketRepository.create(ticket);
+
         LOGGER.info("ticket created");
-        URI createdURI = uriInfo.getBaseUriBuilder().path(ticket.getId().toString()).build();
+
         LOGGER.info("ticket done");
-        return Response.created(createdURI).build();
+        return ticketService.createTicket(ticket, uriInfo);
     }
 
     @DELETE
     @Path("/{id : \\d+}")
     public Response deleteTicket(@PathParam("id") @Min(1) Integer id) {
-        ticketRepository.delete(id);
-        return Response.noContent().build();
+        return ticketService.deleteTicket(id);
     }
     
     @PUT
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response updateTicket(@FormParam("id") Integer id, @FormParam("type") TicketType type,
                                  @FormParam("showing") Integer showingId) {
-
-        Ticket ticket = ticketRepository.find(id);
-        Showing showing = showingRepository.find(showingId);
-        
-        if (ticket == null) {
-            Response.status(NOT_FOUND).build();
-        }
-  
-        ticket.setType(type);
-        ticket.setPrice(type.getPrice());
-        ticket.setShowing(showing);
-
-        ticketRepository.update(ticket);
     
-        return Response.noContent().build();
+        return ticketService.updateTicket(id, type, showingId);
     }
 
 }
