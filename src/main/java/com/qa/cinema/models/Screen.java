@@ -75,11 +75,11 @@ public class Screen {
 		this.numberOfSeats = numberOfSeats;
 	}
 
-	public Boolean getAccessiblity() {
+	public Boolean getAccessibility() {
 		return accessibility;
 	}
 
-	public void setAccessiblity(Boolean accessiblity) {
+	public void setAccessibility(Boolean accessiblity) {
 		this.accessibility = accessiblity;
 	}
 
