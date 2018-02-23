@@ -36,4 +36,9 @@ public class ScreenRepository {
 	public void destroy(@NotNull Integer id) {
         em.remove(em.getReference(Screen.class, id));
 	}
+	
+	@Transactional(REQUIRED)
+	public void update(Screen screen) {
+        em.merge(screen);
+	}
 }

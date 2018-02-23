@@ -10,8 +10,10 @@ import javax.inject.Inject;
 import javax.validation.constraints.Min;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,6 +23,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import com.qa.cinema.models.Screen;
+import com.qa.cinema.models.ScreenType;
 import com.qa.cinema.models.Showing;
 import com.qa.cinema.repositories.ScreenRepository;
 import com.qa.cinema.util.JSONCreator;
@@ -69,6 +72,26 @@ public class ScreenEndPoint {
     @Path("/{id : \\d+}")
     public Response deleteBook(@PathParam("id") @Min(1) Integer id) {
         screenRepository.destroy(id);
+        return Response.noContent().build();
+    }
+
+	@PUT
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response updateScreen(@FormParam("id") Integer id, @FormParam("type") ScreenType type,
+                                 @FormParam("numberOfSeats") Integer numberOfSeats,
+                                 @FormParam("accessibility") Boolean accessibility) {
+
+        Screen screen = screenRepository.find(id);
+        if (screen == null) {
+            Response.status(NOT_FOUND).build();
+        }
+        
+        screen.setType(type);
+        screen.setNumberOfSeats(numberOfSeats);
+        screen.setAccessiblity(accessibility);
+        
+        screenRepository.update(screen);
+    
         return Response.noContent().build();
     }
 }
