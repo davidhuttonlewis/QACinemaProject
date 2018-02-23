@@ -81,7 +81,7 @@ public class ShowingEndpoint {
 	
 	@PUT
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response updateScreen(@FormParam("id") Integer id, @FormParam("film") String film,
+    public Response updateShowing(@FormParam("id") Integer id, @FormParam("film") String film,
                                  @FormParam("screen") Integer screenId,
                                  @FormParam("time") String time) {
 
