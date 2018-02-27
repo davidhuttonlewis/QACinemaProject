@@ -36,7 +36,7 @@ public class JSONCreatorTest {
 		booking.setId(1);
 		booking.setBookingRef("000000");
 		
-		Ticket ticket = new Ticket(TicketType.STANDARD, 7.0, show, booking);
+		Ticket ticket = new Ticket(TicketType.STANDARD, show, booking);
 		ticket.setId(1);
 		
 		booking.setTicket(Arrays.asList(ticket));
