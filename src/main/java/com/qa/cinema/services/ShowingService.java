@@ -48,14 +48,14 @@ public class ShowingService {
 
 	public Response createShowing(Showing showing, UriInfo uriInfo) {
 		
-		if(!checkClash(showing.getTime(), showing.getScreen()))
-		{
+		//if(!checkClash(showing.getTime(), showing.getScreen()))
+		//{
 		showing = showingRepository.create(showing);
 		URI createdURI = uriInfo.getBaseUriBuilder().path(showing.getId().toString()).build();
 		return Response.created(createdURI).build();
-		}else {
-			return Response.status(NOT_FOUND).build();
-		}
+//		}else {
+//			return Response.status(NOT_FOUND).build();
+//		}
 	}
 	
 	public Response deleteShowing(Integer id) {
