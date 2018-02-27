@@ -1,6 +1,5 @@
 package com.qa.cinema.repositories;
 
-import com.qa.cinema.models.Showing;
 import com.qa.cinema.models.Ticket;
 
 import javax.persistence.EntityManager;
@@ -30,7 +29,7 @@ public class TicketRepository {
 
 	@Transactional(REQUIRED)
 	public Ticket create(@NotNull Ticket ticket) {
-		em.persist(ticket);
+		em.merge(ticket);
 		return ticket;
 	}
 

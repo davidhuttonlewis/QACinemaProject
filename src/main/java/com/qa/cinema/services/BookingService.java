@@ -27,6 +27,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import com.qa.cinema.models.Booking;
+import com.qa.cinema.models.Ticket;
 import com.qa.cinema.repositories.BookingRepository;
 import com.qa.cinema.rest.BookingEndpoint;
 import com.qa.cinema.util.JSONCreator;
@@ -83,6 +84,18 @@ public class BookingService {
 	public Response deleteBooking(Integer id) {
 		bookingRepository.destroy(id);
 		return Response.noContent().build();
+	}
+	
+	public Double bookingTotal(Integer id){
+		
+		List<Ticket> tickets = bookingRepository.find(id).getTicket();
+		Double total = 0.0;
+		for(Ticket ticket : tickets){
+			total += ticket.getPrice();
+		}
+		
+		return total;
+	
 	}
 	
 }
