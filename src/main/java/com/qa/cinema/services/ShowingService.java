@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Context;
@@ -18,10 +19,13 @@ import com.qa.cinema.models.Showing;
 import com.qa.cinema.repositories.ScreenRepository;
 import com.qa.cinema.repositories.ShowingRepository;
 import com.qa.cinema.util.JSONCreator;
+import java.util.logging.Logger;
 
 
 
 public class ShowingService {
+	
+	private static final Logger LOGGER = Logger.getLogger(ScreenService.class.getName());
 	
 	@Inject
 	private ShowingRepository showingRepository;
@@ -48,14 +52,14 @@ public class ShowingService {
 
 	public Response createShowing(Showing showing, UriInfo uriInfo) {
 		
-		//if(!checkClash(showing.getTime(), showing.getScreen()))
-		//{
+		if(checkClash(showing.getTime(), showing.getScreen()))
+		{
 		showing = showingRepository.create(showing);
 		URI createdURI = uriInfo.getBaseUriBuilder().path(showing.getId().toString()).build();
 		return Response.created(createdURI).build();
-//		}else {
-//			return Response.status(NOT_FOUND).build();
-//		}
+		}else {
+			return Response.status(NOT_FOUND).build();
+		}
 	}
 	
 	public Response deleteShowing(Integer id) {
@@ -94,12 +98,18 @@ public class ShowingService {
 	
 	public boolean checkClash(Date date, Screen screen) {
 		
+		Date time = date;
+		LOGGER.info("###DATE ENTERED###" + date.getTime());
+		LOGGER.info("###SCREEN ENTERED###" + screen.getId());
 		List<Showing> showings = showingRepository.findAll();
 		for (int i = 0; i < showings.size(); i++) {
-			if((showings.get(i).getTime() == date)&&(showings.get(i).getScreen().getId() == screen.getId())) {
+			LOGGER.info("###DATE CHECKING###" + showings.get(i).getTime().getTime());
+			LOGGER.info("###SCREEN CHECKING###" + showings.get(i).getScreen().getId());
+			if((showings.get(i).getTime().getTime() == date.getTime()) || (date.getTime() <= showings.get(i).getEndTime().getTime()) && (showings.get(i).getScreen().getId() == screen.getId())) {
+				LOGGER.info("###INSIDE IF###");
 				return false;
 			}		
-			}
+		}
 		return true;		
 	}
 	
