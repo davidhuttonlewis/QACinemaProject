@@ -64,15 +64,33 @@ public class TicketService {
         LOGGER.info("got some tickets");
         return Response.ok(json.toJSON(tickets)).build();
     }
+    
+    public int countTickets(int id) {
+    	int count = 0;
+    	List<Ticket> tickets = ticketRepository.findAll();
+    	 for (int i = 0; i < tickets.size(); i++) {
+    		 if(tickets.get(i).getShowing().getId() == id) {
+    			count++; 
+    		 }
+    	 }
+		return count;
+    }
 
 
     public Response createTicket(Ticket ticket, UriInfo uriInfo) {
         LOGGER.info("in create method");
         ticket = ticketRepository.create(ticket);
         LOGGER.info("ticket created  " + ticket);
+        
+        //The commented out code should work however I can't seem to get the correct Json code to create the ticket.
+//        if(countTickets(ticket.getShowing().getId()) < ticket.getShowing().getScreen().getNumberOfSeats())
+//        {
         URI createdURI = uriInfo.getBaseUriBuilder().path(ticket.getId().toString()).build();
         LOGGER.info("ticket done +   " + createdURI);
         return Response.created(createdURI).build();
+//        }else {
+//        	 return Response.noContent().build();
+//        }
     }
 
 

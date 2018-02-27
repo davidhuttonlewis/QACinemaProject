@@ -47,9 +47,15 @@ public class ShowingService {
 	}
 
 	public Response createShowing(Showing showing, UriInfo uriInfo) {
+		
+		if(!checkClash(showing.getTime(), showing.getScreen()))
+		{
 		showing = showingRepository.create(showing);
 		URI createdURI = uriInfo.getBaseUriBuilder().path(showing.getId().toString()).build();
 		return Response.created(createdURI).build();
+		}else {
+			return Response.status(NOT_FOUND).build();
+		}
 	}
 	
 	public Response deleteShowing(Integer id) {
@@ -72,7 +78,8 @@ public class ShowingService {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-	        
+//	        if(checkClash(date, screen))
+//	       {
 	        showing.setFilm(film);
 	        showing.setScreen(screen);
 	        showing.setTime(date);
@@ -80,6 +87,20 @@ public class ShowingService {
 	        showingRepository.update(showing);
 	    
 	        return Response.noContent().build();
+//	        }else {
+//	        	return Response.notModified().build();
+//	        }
+	}
+	
+	public boolean checkClash(Date date, Screen screen) {
+		
+		List<Showing> showings = showingRepository.findAll();
+		for (int i = 0; i < showings.size(); i++) {
+			if((showings.get(i).getTime() == date)&&(showings.get(i).getScreen().getId() == screen.getId())) {
+				return false;
+			}		
+			}
+		return true;		
 	}
 	
 }

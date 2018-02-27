@@ -22,7 +22,7 @@ public class Screen {
 	@NotNull
 	private ScreenType type;
 
-	@Min(10)
+	@Min(2)
 	@Max(100)
 	@NotNull
 	private Integer numberOfSeats;

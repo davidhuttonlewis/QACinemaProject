@@ -43,7 +43,7 @@ public class TicketEndpoint {
         LOGGER.info("ticket");
         return ticketService.getTicket(id);
     }
-
+    
     @GET
     @Produces(APPLICATION_JSON)
     public Response getAllTickets() {
