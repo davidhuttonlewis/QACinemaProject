@@ -1,5 +1,7 @@
 package com.qa.cinema.models;
 
+import java.util.Calendar;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -42,12 +44,21 @@ public class Ticket {
 
 	public Ticket() {}
 
-	public Ticket(TicketType type, Double price, Showing showing, Booking booking) {
+	public Ticket(TicketType type, Showing showing, Booking booking) {
 		super();
 		this.type = type;
-		this.price = price;
+		this.price = type.getPrice() + showing.getScreen().getType().getPrice();
 		this.showing = showing;
 		this.booking = booking;
+		
+		// 1 is sunday so 4 is wednesday!
+		Calendar c = Calendar.getInstance();
+		c.setTime(showing.getTime());
+		int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+		if (dayOfWeek == 4){
+			this.price = this.price / 2;
+		}
+		
 	}
 
 	public Integer getId() {

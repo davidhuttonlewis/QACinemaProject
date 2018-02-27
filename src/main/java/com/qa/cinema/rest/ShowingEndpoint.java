@@ -66,6 +66,7 @@ public class ShowingEndpoint {
 		return showingService.deleteShowing(id);
 	}
 	
+	
 	@PUT
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response updateShowing(@FormParam("id") Integer id, @FormParam("film") String film,
