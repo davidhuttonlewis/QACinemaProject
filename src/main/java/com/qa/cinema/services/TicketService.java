@@ -1,17 +1,15 @@
-package com.qa.cinema.rest;
+package com.qa.cinema.services;
 
-import com.qa.cinema.models.Screen;
-import com.qa.cinema.models.ScreenType;
 import com.qa.cinema.models.Showing;
 import com.qa.cinema.models.Ticket;
 import com.qa.cinema.models.TicketType;
 import com.qa.cinema.repositories.ShowingRepository;
 import com.qa.cinema.repositories.TicketRepository;
+import com.qa.cinema.rest.TicketEndpoint;
 import com.qa.cinema.util.JSONCreator;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 
+import javax.ejb.Stateless;
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.validation.constraints.Min;
 import javax.ws.rs.*;
@@ -19,32 +17,30 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.awt.*;
 import java.net.URI;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.logging.Logger;
-import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
-@Path("/ticket")
-public class TicketEndPoint {
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 
-    private static final Logger LOGGER = Logger.getLogger(TicketEndPoint.class.getName());
+@Stateless
+@Default
+public class TicketService {
+
+    private static final Logger LOGGER = Logger.getLogger(TicketEndpoint.class.getName());
 
     @Inject
     private TicketRepository ticketRepository;
-    
+
     @Inject
     private ShowingRepository showingRepository;
 
     @Inject
     private JSONCreator json;
 
-    @GET
-    @Path("/{id : \\d+}")
-    @Produces(APPLICATION_JSON)
-    public Response getTicket(@PathParam("id") @Min(1) Integer id) {
+    public Response getTicket(Integer id) {
         LOGGER.info("are you here");
         Ticket ticket = ticketRepository.find(id);
         LOGGER.info("in get single ticket");
@@ -56,8 +52,7 @@ public class TicketEndPoint {
         return Response.ok(json.toJSON(ticket)).build();
     }
 
-    @GET
-    @Produces(APPLICATION_JSON)
+
     public Response getAllTickets() {
         LOGGER.info("in getting all tickets");
         List<Ticket> tickets = ticketRepository.findAll();
@@ -69,43 +64,57 @@ public class TicketEndPoint {
         LOGGER.info("got some tickets");
         return Response.ok(json.toJSON(tickets)).build();
     }
-
-    @POST
-    @Consumes(APPLICATION_JSON)
-    public Response createTicket(Ticket ticket, @Context UriInfo uriInfo) {
-        LOGGER.info("in create method");
-        ticket = ticketRepository.create(ticket);
-        LOGGER.info("ticket created");
-        URI createdURI = uriInfo.getBaseUriBuilder().path(ticket.getId().toString()).build();
-        LOGGER.info("ticket done");
-        return Response.created(createdURI).build();
+    
+    public int countTickets(int id) {
+    	int count = 0;
+    	List<Ticket> tickets = ticketRepository.findAll();
+    	 for (int i = 0; i < tickets.size(); i++) {
+    		 if(tickets.get(i).getShowing().getId() == id) {
+    			count++; 
+    		 }
+    	 }
+		return count;
     }
 
-    @DELETE
-    @Path("/{id : \\d+}")
-    public Response deleteTicket(@PathParam("id") @Min(1) Integer id) {
+
+    public Response createTicket(Ticket ticket, UriInfo uriInfo) {
+        LOGGER.info("in create method");
+        ticket = ticketRepository.create(ticket);
+        LOGGER.info("ticket created  " + ticket);
+        
+        //The commented out code should work however I can't seem to get the correct Json code to create the ticket.
+//        if(countTickets(ticket.getShowing().getId()) < ticket.getShowing().getScreen().getNumberOfSeats())
+//        {
+        URI createdURI = uriInfo.getBaseUriBuilder().path(ticket.getId().toString()).build();
+        LOGGER.info("ticket done +   " + createdURI);
+        return Response.created(createdURI).build();
+//        }else {
+//        	 return Response.noContent().build();
+//        }
+    }
+
+
+    public Response deleteTicket(Integer id) {
         ticketRepository.delete(id);
         return Response.noContent().build();
     }
-    
-    @PUT
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response updateTicket(@FormParam("id") Integer id, @FormParam("type") TicketType type,
-                                 @FormParam("showing") Integer showingId) {
+
+
+    public Response updateTicket(Integer id, TicketType type, Integer showingId) {
 
         Ticket ticket = ticketRepository.find(id);
         Showing showing = showingRepository.find(showingId);
-        
+
         if (ticket == null) {
             Response.status(NOT_FOUND).build();
         }
-  
+
         ticket.setType(type);
         ticket.setPrice(type.getPrice());
         ticket.setShowing(showing);
 
         ticketRepository.update(ticket);
-    
+
         return Response.noContent().build();
     }
 

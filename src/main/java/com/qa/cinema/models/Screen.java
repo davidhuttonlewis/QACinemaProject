@@ -22,7 +22,7 @@ public class Screen {
 	@NotNull
 	private ScreenType type;
 
-	@Min(10)
+	@Min(2)
 	@Max(100)
 	@NotNull
 	private Integer numberOfSeats;
@@ -75,11 +75,11 @@ public class Screen {
 		this.numberOfSeats = numberOfSeats;
 	}
 
-	public Boolean getAccessiblity() {
+	public Boolean getAccessibility() {
 		return accessibility;
 	}
 
-	public void setAccessiblity(Boolean accessiblity) {
+	public void setAccessibility(Boolean accessiblity) {
 		this.accessibility = accessiblity;
 	}
 
