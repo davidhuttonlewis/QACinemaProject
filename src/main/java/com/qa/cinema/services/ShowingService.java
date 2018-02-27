@@ -98,7 +98,6 @@ public class ShowingService {
 	
 	public boolean checkClash(Date date, Screen screen) {
 		
-		Date time = date;
 		LOGGER.info("###DATE ENTERED###" + date.getTime());
 		LOGGER.info("###SCREEN ENTERED###" + screen.getId());
 		List<Showing> showings = showingRepository.findAll();
