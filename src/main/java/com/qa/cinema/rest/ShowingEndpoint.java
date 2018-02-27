@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.validation.constraints.Min;
@@ -30,40 +31,56 @@ import com.qa.cinema.models.ScreenType;
 import com.qa.cinema.models.Showing;
 import com.qa.cinema.repositories.ScreenRepository;
 import com.qa.cinema.repositories.ShowingRepository;
-import com.qa.cinema.services.ShowingService;
 import com.qa.cinema.util.JSONCreator;
 
 @Path("/showing")
 public class ShowingEndpoint {
 
+	private static final Logger LOGGER = Logger.getLogger(ShowingEndpoint.class.getName());
+
+
 	@Inject
-	private ShowingService showingService;
+	private ShowingRepository showingRepository;
 	
+	@Inject
+	private ScreenRepository screenRepository;
+
+	@Inject
+	private JSONCreator json;
+
 	@GET
 	@Path("/{id : \\d+}")
 	@Produces(APPLICATION_JSON)
 	public Response getShowing(@PathParam("id") @Min(1) Integer id) {
-		return showingService.getShowing(id);		
+		Showing showing = showingRepository.find(id);
+		if (showing == null)
+			return Response.status(NOT_FOUND).build();
+		return Response.ok(json.toJSON(showing)).build();
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllShowings() {
-		return showingService.getAllShowings();
+
+		List<Showing> showings = showingRepository.findAll();
+		if (showings.isEmpty())
+			return Response.status(NOT_FOUND).build();
+		return Response.ok(json.toJSON(showings)).build();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createBook(Showing showing, @Context UriInfo uriInfo) {
-
-		return showingService.createShowing(showing, uriInfo);
+		showing = showingRepository.create(showing);
+		URI createdURI = uriInfo.getBaseUriBuilder().path(showing.getId().toString()).build();
+		return Response.created(createdURI).build();
 	}
 
 	@DELETE
 	@Path("/{id : \\d+}")
 	public Response deleteBook(@PathParam("id") @Min(1) Integer id) {
-
-		return showingService.deleteShowing(id);
+		showingRepository.delete(id);
+		return Response.noContent().build();
 	}
 	
 	@PUT
@@ -72,8 +89,42 @@ public class ShowingEndpoint {
                                  @FormParam("screen") Integer screenId,
                                  @FormParam("time") String time) {
 
-		
-		return showingService.updateShowing(id, screenId, time, film);
+		LOGGER.info("ID is " + id);
+		LOGGER.info("Film is " + film);
+		LOGGER.info("ScreenID is " + screenId);
+		LOGGER.info("Time is " + time);
+
+        Showing showing = showingRepository.find(id);
+		LOGGER.info("Showing is " + showing);
+        Screen screen = screenRepository.find(screenId);
+		LOGGER.info("Screen is " + screen);
+
+
+
+        if (showing == null) {
+            Response.status(NOT_FOUND).build();
+        }
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date date = null;
+
+        LOGGER.info("SDF is " + sdf);
+
+		try {
+			date = sdf.parse(time);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		LOGGER.info("Date is " + date);
+
+        showing.setFilm(film);
+        showing.setScreen(screen);
+        showing.setTime(date);
+        
+        showingRepository.update(showing);
+    
+        return Response.noContent().build();
     }
 
 }
