@@ -28,9 +28,20 @@ public class Showing {
 	@NotNull
 	private Date time;
 	@NotNull
+	private Date endTime;
+	@NotNull
 	@Size(min = 2, max = 50)
 	private String film;
 	
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "screening_id")
 	@NotNull
